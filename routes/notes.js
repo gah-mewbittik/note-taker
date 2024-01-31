@@ -7,7 +7,7 @@ const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
 notes.get('/', (req, res) => {
     console.info(`${req.method} request received for notes`);
 
-    readFromFile('/db/db.json').then ((data) => res.json(JSON.parse(data)));
+    readFromFile('./db/db.json').then ((data) => res.json(JSON.parse(data)));
 });
 
 //Post rout for submitting a note
@@ -26,7 +26,7 @@ notes.post('/', (req, res) => {
             text
         };
 
-        readAndAppend(newNote, '/db/db.json');
+        readAndAppend(newNote, './db/db.json');
 
         const response = {
             status: 'success',
