@@ -10,4 +10,34 @@ notes.get('/', (req, res) => {
     readFromFile('/db/db.json').then ((data) => res.json(JSON.parse(data)));
 });
 
-//Post
+//Post rout for submitting a note
+notes.post('/', (req, res) => {
+    //Log that a POST request was received
+    console.info(`${req.method} request received to submit feedback`);
+
+    //Destructing for the items in req.body
+    const { title, text } = req.body;
+
+    //check if all required properties are present
+    if(title && text){
+        //variable being saved
+        const newNote = {
+            title,
+            text
+        };
+
+        readAndAppend(newNote, '/db/db.json');
+
+        const response = {
+            status: 'success',
+            body: newNote
+        };
+
+        res.json(response);
+    }else{
+        res.json('Error in creating note.');
+    }
+
+});
+
+module.exports = notes;
