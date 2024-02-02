@@ -4,7 +4,7 @@ const notes = require('express').Router();
 const uuid = require('../helpers/uuid');
 
 //Helper function for reading and writing to JSON file
-const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
+const { readFromFile, readAndAppend, writeToFile } = require('../helpers/fsUtils');
 
 //GET route for retrieving all notes
 notes.get('/', (req, res) => {
@@ -45,11 +45,28 @@ notes.post('/', (req, res) => {
 });
 
 //TODO: remember to tackle delete
-// notes.delete('/', (req, res) => {
-//     //Log that a POST request was received
-//     console.info(`${req.method} request received to submit note`);
-
-
-// });
+notes.delete('/:note_id', async (req, res) => {
+    try {
+      // Log that a DELETE request was received
+      console.info(`${req.method} request received to delete note`);
+  
+      const id = req.params.note_id;
+      const data = await readFromFile('./db/db.json');
+      const notes = JSON.parse(data);
+  
+      const index = notes.findIndex((note) => note.note_id === id);
+  
+      if (index !== -1) {
+        notes.splice(index, 1);
+        await writeToFile('./db/db.json', notes);
+        res.json('Note DELETED Successfully!');
+      } else {
+        res.status(404).json({ error: 'Note not found' });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Failed to Delete Note' });
+    }
+  });
 
 module.exports = notes;
