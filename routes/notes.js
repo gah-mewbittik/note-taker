@@ -13,7 +13,7 @@ notes.get('/', (req, res) => {
 //Post rout for submitting a note
 notes.post('/', (req, res) => {
     //Log that a POST request was received
-    console.info(`${req.method} request received to submit feedback`);
+    console.info(`${req.method} request received to submit note`);
 
     //Destructing for the items in req.body
     const { title, text } = req.body;
@@ -39,5 +39,13 @@ notes.post('/', (req, res) => {
     }
 
 });
+
+//TODO: remember to tackle delete
+// notes.delete('/', (req, res) => {
+//     //Log that a POST request was received
+//     console.info(`${req.method} request received to submit note`);
+
+
+// });
 
 module.exports = notes;
