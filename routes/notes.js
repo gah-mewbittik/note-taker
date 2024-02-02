@@ -1,5 +1,8 @@
 const notes = require('express').Router();
 
+//Import uuid file
+const uuid = require('../helpers/uuid');
+
 //Helper function for reading and writing to JSON file
 const { readFromFile, readAndAppend } = require('../helpers/fsUtils');
 
@@ -23,7 +26,8 @@ notes.post('/', (req, res) => {
         //variable being saved
         const newNote = {
             title,
-            text
+            text,
+            note_id: uuid(),
         };
 
         readAndAppend(newNote, './db/db.json');
